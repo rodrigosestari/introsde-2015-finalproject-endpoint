@@ -1,8 +1,8 @@
 package util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,11 +36,11 @@ public class JaxbUtil {
 	 * @return
 	 * a object type packageXml
 	 */
-	public static Object xmlToJaxb(String packageXml, File fileXml, File fileXsd) {
+	public static Object xmlToJaxb(String packageXml, String xml, File fileXsd) {
 		Object obj = null;
 		try {
 
-			InputStream is = new FileInputStream(fileXml);
+			InputStream is = new  ByteArrayInputStream(xml.getBytes());
 
 			JAXBContext jaxbContext = JAXBContext.newInstance(packageXml);
 
