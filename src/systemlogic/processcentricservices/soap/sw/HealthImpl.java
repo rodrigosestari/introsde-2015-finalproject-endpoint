@@ -1,7 +1,7 @@
 package systemlogic.processcentricservices.soap.sw;
 
+import java.io.File;
 import java.net.URI;
-import java.util.List;
 
 import javax.jws.WebService;
 import javax.ws.rs.client.Client;
@@ -13,9 +13,13 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.client.ClientConfig;
 
-import systemlogic.businesslogicservices.dto.MeasureHistoryDto;
-import systemlogic.businesslogicservices.dto.PersonDto;
-import systemlogic.businesslogicservices.view.MeasureListHistoryView;
+import systemlogic.businesslogicservices.dto.measure.MeasureHistoryDto;
+import systemlogic.businesslogicservices.dto.measuredefinition.MeasureTypesView;
+import systemlogic.businesslogicservices.dto.measurehistory.MeasureHistoryView;
+import systemlogic.businesslogicservices.dto.people.PeopleView;
+import systemlogic.businesslogicservices.dto.person.PersonDto;
+import util.JaxbUtil;
+
 
 
 //Service Implementation
@@ -24,28 +28,30 @@ import systemlogic.businesslogicservices.view.MeasureListHistoryView;
 
 @WebService(endpointInterface = "systemlogic.processcentricservices.soap.sw.Health", serviceName = "HealthService")
 public class HealthImpl implements Health {
-	
+
 	ClientConfig clientConfig = new ClientConfig();
 	Client client = ClientBuilder.newClient(clientConfig);
-	WebTarget service = client.target(getBaseURI()).path("person");
 	
-	private static URI getBaseURI() {
-		return UriBuilder.fromUri("http://10.218.221.138:5700/finalprojectrest/").build();
-	}
 
+	private static URI getBaseURI() {
+		return UriBuilder.fromUri("https://rodrigo-sestari-final-rest.herokuapp.com/finalprojectrest").build();
+	}
+	
 	@Override
 	public PersonDto readPerson(Long id) {
-		
-
-	
-		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
-		int httpStatus =response.getStatus();     		
+		WebTarget service = client.target(getBaseURI()).path("person/"+id);
+		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();     		
 		String xml = response.readEntity(String.class);
-
+		
+		//get xsd
+		File xsdPeople = new File("resource/PersonDto.xsd");
+		//um-marshal Xml into object people,
+		PersonDto people = (PersonDto) JaxbUtil.xmlToJaxb("systemlogic.businesslogicservices.dto.person", xml, xsdPeople);
+		return people;
 	}
 
 	@Override
-	public List<PersonDto> getPeople() {
+	public PeopleView getPeople() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -69,13 +75,13 @@ public class HealthImpl implements Health {
 	}
 
 	@Override
-	public MeasureListHistoryView readPersonHistory(Long id, String measureType) {
+	public MeasureHistoryView readPersonHistory(Long id, String measureType) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<String> readMeasureTypes() {
+	public MeasureTypesView readMeasureTypes() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -97,6 +103,5 @@ public class HealthImpl implements Health {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }

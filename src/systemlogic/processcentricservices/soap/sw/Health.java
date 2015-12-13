@@ -1,6 +1,4 @@
 package systemlogic.processcentricservices.soap.sw;
-import java.util.List;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -9,9 +7,12 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
 
-import systemlogic.businesslogicservices.dto.MeasureHistoryDto;
-import systemlogic.businesslogicservices.dto.PersonDto;
-import systemlogic.businesslogicservices.view.MeasureListHistoryView;
+import systemlogic.businesslogicservices.dto.measure.MeasureHistoryDto;
+import systemlogic.businesslogicservices.dto.measuredefinition.MeasureTypesView;
+import systemlogic.businesslogicservices.dto.measurehistory.MeasureHistoryView;
+import systemlogic.businesslogicservices.dto.people.PeopleView;
+import systemlogic.businesslogicservices.dto.person.PersonDto;
+
 
 
 
@@ -36,7 +37,7 @@ public interface Health {
      */
     @WebMethod(operationName="readPersonList")
     @WebResult(name="people") 
-    public List<PersonDto> getPeople();
+    public PeopleView getPeople();
 
     
     /**
@@ -78,7 +79,7 @@ public interface Health {
  */
     @WebMethod(operationName="readPersonHistory")
     @WebResult(name="MeasureProfile") 
-    public MeasureListHistoryView readPersonHistory(@WebParam(name="personId") Long id, @WebParam(name="type") String measureType);
+    public MeasureHistoryView readPersonHistory(@WebParam(name="personId") Long id, @WebParam(name="type") String measureType);
 
     
     
@@ -90,7 +91,7 @@ public interface Health {
      */
     @WebMethod(operationName="readMeasureTypes")
     @WebResult(name="MeasureProfile") 
-    public List<String> readMeasureTypes();
+    public MeasureTypesView readMeasureTypes();
 
     
     /**
