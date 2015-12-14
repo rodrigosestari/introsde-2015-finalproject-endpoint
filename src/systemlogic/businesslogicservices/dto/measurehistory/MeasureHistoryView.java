@@ -118,7 +118,7 @@ public class MeasureHistoryView {
     })
     public static class Measure {
 
-        protected byte mid;
+        protected Long mid;
         protected float value;
         @XmlElement(required = true)
         @XmlSchemaType(name = "date")
@@ -128,7 +128,7 @@ public class MeasureHistoryView {
          * Gets the value of the mid property.
          * 
          */
-        public byte getMid() {
+        public Long getMid() {
             return mid;
         }
 
@@ -136,7 +136,7 @@ public class MeasureHistoryView {
          * Sets the value of the mid property.
          * 
          */
-        public void setMid(byte value) {
+        public void setMid(Long value) {
             this.mid = value;
         }
 

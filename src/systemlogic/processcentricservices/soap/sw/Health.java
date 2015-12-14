@@ -117,7 +117,7 @@ public interface Health {
      */
     @WebMethod(operationName="savePersonMeasure")
     @WebResult(name="measureId") 
-    public Long savePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") MeasureHistoryDto m);
+    public Long savePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value);
 
     
     
@@ -130,6 +130,6 @@ public interface Health {
      */
     @WebMethod(operationName="updatePersonMeasure")
     @WebResult(name="measureId") 
-    public Long updatePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") MeasureHistoryDto m);
+    public Long updatePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value);
 
 }
