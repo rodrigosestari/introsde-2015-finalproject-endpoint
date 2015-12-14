@@ -7,7 +7,6 @@ import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
 
-import systemlogic.businesslogicservices.dto.measure.MeasureHistoryDto;
 import systemlogic.businesslogicservices.dto.measuredefinition.MeasureTypesView;
 import systemlogic.businesslogicservices.dto.measurehistory.MeasureHistoryView;
 import systemlogic.businesslogicservices.dto.people.PeopleView;
@@ -104,7 +103,7 @@ public interface Health {
      */
     @WebMethod(operationName="readPersonMeasure")
     @WebResult(name="MeasureProfile") 
-    public MeasureHistoryDto readPersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="type") String measureType,@WebParam(name="mid") Long mid);
+    public MeasureHistoryView readPersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="type") String measureType,@WebParam(name="mid") Long mid);
 
     
     /**
@@ -117,7 +116,7 @@ public interface Health {
      */
     @WebMethod(operationName="savePersonMeasure")
     @WebResult(name="measureId") 
-    public Long savePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value);
+    public Long savePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value, @WebParam(name="data")  String Data);
 
     
     
@@ -130,6 +129,6 @@ public interface Health {
      */
     @WebMethod(operationName="updatePersonMeasure")
     @WebResult(name="measureId") 
-    public Long updatePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value);
+    public Long updatePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value, @WebParam(name="data")  String Data);
 
 }

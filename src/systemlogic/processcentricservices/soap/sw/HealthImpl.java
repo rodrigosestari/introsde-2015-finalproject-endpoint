@@ -3,9 +3,6 @@ package systemlogic.processcentricservices.soap.sw;
 import java.io.File;
 import java.io.StringReader;
 import java.net.URI;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
 
 import javax.jws.WebService;
 import javax.ws.rs.client.Client;
@@ -25,7 +22,6 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import systemlogic.businesslogicservices.dto.measure.MeasureHistoryDto;
 import systemlogic.businesslogicservices.dto.measuredefinition.MeasureTypesView;
 import systemlogic.businesslogicservices.dto.measurehistory.MeasureHistoryView;
 import systemlogic.businesslogicservices.dto.measurehistory.MeasureHistoryView.Measure;
@@ -42,7 +38,8 @@ public class HealthImpl implements Health {
 	Client client = ClientBuilder.newClient(clientConfig);
 
 	private static URI getBaseURI() {
-		return UriBuilder.fromUri("https://rodrigo-sestari-final-rest.herokuapp.com/finalprojectrest").build();
+		//return UriBuilder.fromUri("https://rodrigo-sestari-final-rest.herokuapp.com/finalprojectrest").build();
+		return UriBuilder.fromUri("http://192.168.2.1:5700/finalprojectrest/").build();
 	}
 
 	public static NodeList getNodes(String source, String query) throws Exception {
@@ -178,38 +175,40 @@ public class HealthImpl implements Health {
 	}
 
 	@Override
-	public MeasureHistoryDto readPersonMeasure(Long id, String measureType, Long mid) {
+	public MeasureHistoryView readPersonMeasure(Long id, String measureType, Long mid) {
 		WebTarget service = client.target(getBaseURI()).path("person/" + id + "/" + measureType + "/" + mid);
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).get();
 		String xml = response.readEntity(String.class);
 
 		// get xsd
-		File xsdFile = new File("resource/MeasureHistoryDto.xsd");
+		File xsdFile = new File("resource/MeasureHistoryView.xsd");
 		// um-marshal Xml into object people,
-		MeasureHistoryDto measure = (MeasureHistoryDto) JaxbUtil
-				.xmlToJaxb("systemlogic.businesslogicservices.dto.measure", xml, xsdFile);
+		MeasureHistoryView measure = (MeasureHistoryView) JaxbUtil
+				.xmlToJaxb("systemlogic.businesslogicservices.dto.measurehistory", xml, xsdFile);
 		return measure;
 	}
 
 	@Override
-	public Long savePersonMeasure(Long id, String type, Float value) {
+	public Long savePersonMeasure(Long id, String type, Float value, String Data) {
 		Long result =(long) -1;
-		
-		Measure measure  = new Measure();
+		MeasureHistoryView mv = new MeasureHistoryView();
+		Measure measure  = new Measure();		
+		measure.setMid(-1);
 		measure.setValue(value);
-		measure.setCreated(JaxbUtil.dateToXmlGregorianCalendar(new Date()));
+		measure.setCreated(Data);
+		mv.getMeasure().add(measure);
 		
 		File xsdFile = new File("resource/MeasureHistoryView.xsd");
 		
-		String xml  = JaxbUtil.jaxbToXml("systemlogic.businesslogicservices.dto.measurehistory", measure, xsdFile);				
+		String xml  = JaxbUtil.jaxbToXml("systemlogic.businesslogicservices.dto.measurehistory", mv, xsdFile);				
 		WebTarget service = client.target(getBaseURI()).path("person/"+id+"/"+type);
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).post(Entity.xml(xml));
 		xml = response.readEntity(String.class);
 		
-		measure = (Measure) JaxbUtil.xmlToJaxb("systemlogic.businesslogicservices.dto.measurehistory", xml, xsdFile);				
-		if (null != measure){
-			result = measure.getMid();
+		mv = (MeasureHistoryView) JaxbUtil.xmlToJaxb("systemlogic.businesslogicservices.dto.measurehistory", xml, xsdFile);				
+		if (null != mv){
+			result = mv.getMeasure().get(0).getMid().longValue();
 		}
 		return result;
 
@@ -217,24 +216,26 @@ public class HealthImpl implements Health {
 
 
 	@Override
-	public Long updatePersonMeasure(Long id, String type, Float value) {
+	public Long updatePersonMeasure(Long id, String type, Float value, String Data) {
 		Long result =(long) -1;
 		
+		MeasureHistoryView mv = new MeasureHistoryView();
 		Measure measure  = new Measure();
 		measure.setValue(value);
-		measure.setCreated(JaxbUtil.dateToXmlGregorianCalendar(new Date()));
+		measure.setCreated(Data);
+		mv.getMeasure().add(measure);
 		
 		File xsdFile = new File("resource/MeasureHistoryView.xsd");
 		
-		String xml  = JaxbUtil.jaxbToXml("systemlogic.businesslogicservices.dto.measurehistory", measure, xsdFile);				
+		String xml  = JaxbUtil.jaxbToXml("systemlogic.businesslogicservices.dto.measurehistory", mv, xsdFile);				
 		WebTarget service = client.target(getBaseURI()).path("person/"+id+"/"+type);
 
 		Response response = service.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML).put(Entity.xml(xml));
 		xml = response.readEntity(String.class);
 		
-		measure = (Measure) JaxbUtil.xmlToJaxb("systemlogic.businesslogicservices.dto.measurehistory", xml, xsdFile);				
-		if (null != measure){
-			result = measure.getMid();
+		mv = (MeasureHistoryView)JaxbUtil.xmlToJaxb("systemlogic.businesslogicservices.dto.measurehistory", xml, xsdFile);				
+		if (null != mv){
+			result =  mv.getMeasure().get(0).getMid().longValue();
 		}
 		return result;
 	}
