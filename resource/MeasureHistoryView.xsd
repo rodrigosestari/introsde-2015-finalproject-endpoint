@@ -2,12 +2,12 @@
   <xs:element name="measureHistory">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="measure" maxOccurs="unbounded" minOccurs="0">
+        <xs:element name="measure"  maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element type="xs:byte" name="mid"/>
+              <xs:element type="xs:int" name="mid" maxOccurs="1" minOccurs="0"/>
               <xs:element type="xs:float" name="value"/>
-              <xs:element type="xs:date" name="created"/>
+              <xs:element type="xs:string" name="created"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>

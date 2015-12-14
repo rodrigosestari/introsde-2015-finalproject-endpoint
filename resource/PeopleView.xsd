@@ -5,10 +5,10 @@
         <xs:element name="person" maxOccurs="unbounded" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
-              <xs:element type="xs:byte" name="idPerson"/>
+              <xs:element type="xs:int" name="idPerson"/>
               <xs:element type="xs:string" name="firstname"/>
               <xs:element type="xs:string" name="lastname"/>
-              <xs:element name="healthProfile">
+              <xs:element name="healthProfile"  maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element name="measureType" maxOccurs="unbounded" minOccurs="0">
