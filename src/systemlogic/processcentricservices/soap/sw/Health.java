@@ -115,20 +115,10 @@ public interface Health {
      * @return
      */
     @WebMethod(operationName="savePersonMeasure")
-    @WebResult(name="measureId") 
-    public Long savePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value, @WebParam(name="data")  String Data);
+    @WebResult(name="measureHistory") 
+    public MeasureHistoryView savePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value, @WebParam(name="data")  String Data);
 
     
     
-    /**
-     * Method #10: updatePersonMeasure(Long id, Measure m) => Measure | should update the measure identified with {m.mid}, 
-     * related to the Person identified by {id}
-     * @param id
-     * @param m
-     * @return
-     */
-    @WebMethod(operationName="updatePersonMeasure")
-    @WebResult(name="measureId") 
-    public Long updatePersonMeasure(@WebParam(name="personId") Long id, @WebParam(name="measure") String type,  @WebParam(name="value") Float value, @WebParam(name="data")  String Data);
-
+   
 }
