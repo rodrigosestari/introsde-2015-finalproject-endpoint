@@ -10,10 +10,10 @@ package systemlogic.businesslogicservices.dto.people;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -74,7 +74,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "", propOrder = {
     "person"
 })
-@XmlRootElement(name = "people")
+//@XmlRootElement(name = "people")
 public class PeopleView {
 
     protected List<PeopleView.Person> person;
